@@ -34,7 +34,8 @@ public class UsersController extends HttpServlet {
                 rs = listDo(request);
                 break;
             case "login":
-                rs = loginDo(request);
+                //rs = loginDo(request);
+                loginDo(request, response);
                 break;
             case "disableuser":
                 rs = disableuserDo(request);
@@ -46,7 +47,8 @@ public class UsersController extends HttpServlet {
         String pageNum = request.getParameter("pageNum");
 
         //返回响应数据
-        response.getWriter().write(rs.toString());
+        //response.getWriter().write(rs.toString());
+
     }
     //获取所有用户列表的请求
     private ResponseCode listDo(HttpServletRequest request){
@@ -75,7 +77,7 @@ public class UsersController extends HttpServlet {
     }
 
     //用户登录的请求
-    private ResponseCode loginDo(HttpServletRequest request){
+    private void loginDo(HttpServletRequest request,HttpServletResponse response) {
         //获取参数
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -87,7 +89,15 @@ public class UsersController extends HttpServlet {
         session.setAttribute("user",rs.getData());
 
         //调用业务层处理业务
-        return rs;
+        //return rs;
+        //response.sendRedirect("/home.jsp");
+        try {
+            request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     //禁用用户的请求
     private ResponseCode disableuserDo(HttpServletRequest request){

@@ -1,0 +1,30 @@
+#wk{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+
+}
+#container{
+    width: 200px;
+    height: 200px;
+    border: 3px black double;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    background-color: salmon;
+}
+#con-form {
+    /*border: 1px slateblue solid;*/
+
+}
+#con-form input{
+    margin-top: 20px;
+
+}
+.cf-f{
+    padding-left: 10px;
+    height: 25px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+}
