@@ -31,7 +31,8 @@ public class UsersController extends HttpServlet {
         //判断一下是什么样的请求
         switch (path){
             case "list":
-                rs = listDo(request);
+                //rs = listDo(request);
+                listDo(request,response);
                 break;
             case "login":
                 //rs = loginDo(request);
@@ -39,6 +40,9 @@ public class UsersController extends HttpServlet {
                 break;
             case "disableuser":
                 rs = disableuserDo(request);
+                break;
+            case "yz":
+                 yzDo(request,response);
                 break;
         }
 
@@ -51,29 +55,35 @@ public class UsersController extends HttpServlet {
 
     }
     //获取所有用户列表的请求
-    private ResponseCode listDo(HttpServletRequest request){
+    private void listDo(HttpServletRequest request,HttpServletResponse response) throws ServletException{
 
         ResponseCode rs = new ResponseCode();
-        HttpSession session = request.getSession();
+       /* HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
         if(user == null){
             rs.setStatus(3);
             rs.setMsg("请登录后操作！");
-            return rs;
+            //return rs;
         }
         if(user.getType() != 1){
             rs.setStatus(3);
             rs.setMsg("没有操作权限！");
-            return rs;
-        }
+            //return rs;
+        }*/
 
         //获取参数
         String pageSize = request.getParameter("pageSize");
         String pageNum = request.getParameter("pageNum");
         rs = uc.selectAll(pageSize,pageNum);
 
+        request.setAttribute("uli",rs);
+        try {
+            request.getRequestDispatcher("/WEB-INF/userlist.jsp").forward(request,response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //调用业务层处理业务
-        return rs;
+        //return rs;
     }
 
     //用户登录的请求
@@ -108,5 +118,20 @@ public class UsersController extends HttpServlet {
 
         //调用业务层处理业务
         return rs;
+    }
+
+    //验证用户名是否存在
+    private void yzDo(HttpServletRequest request,HttpServletResponse response){
+        //获取参数
+        String uname = request.getParameter("un");
+
+        Boolean bol = uc.yz(uname);
+
+        //调用业务层处理业务
+        try {
+            response.getWriter().write(bol+"");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

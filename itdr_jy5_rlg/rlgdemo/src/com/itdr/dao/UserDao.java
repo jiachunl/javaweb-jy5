@@ -51,6 +51,19 @@ public class UserDao {
         return u;
     }
 
+    //根据用户名查找一个用户
+    public Users selectOne(String uname) {
+        QueryRunner qr = new QueryRunner(PoolUTil.getCom());
+        String sql = "select * from users where uname = ?";
+        Users u = null;
+        try {
+            u = qr.query(sql,new BeanHandler<Users>(Users.class),uname);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return u;
+    }
+
     //根据id禁用一个用户
     public int updateByUid(Integer uid) {
         QueryRunner qr = new QueryRunner(PoolUTil.getCom());
